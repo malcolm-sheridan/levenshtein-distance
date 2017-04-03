@@ -5,7 +5,7 @@ function LevenshteinDistance(list1, list1Length, list2, list2Length, additionalL
   this.list1Length = list1Length;
   this.list2Length = list2Length;
   this.additionalLookupCost = additionalLookupCost;
-}
+} 
 
 LevenshteinDistance.prototype.compare = function () {
   var previousResults = [],
