@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Levenshtein Distance</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Distance">
+  <meta name="author" content="Malcolm Sheridan">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">  
+  <script src="https://momentjs.com/downloads/moment.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="starter-template">
+    <h1>Levenshtein Distance</h1>
+    <p class="lead"><strong>Levenshtein distance</strong> (LD) is a measure of the similarity between two strings, which we will refer to as the source string (s) and the target string (t). The distance is the number of deletions, insertions, or substitutions required to transform s into t.</p>    
+      <form role="form">
+        <div class="row">
+          <div class="form-group col-lg-3">
+            <label for="exampleInputEmail1">Total List 1 Items</label>
+            <input type="text" class="form-control" id="list1Total" />          
+          </div>      
+          <div class="form-group col-lg-9">
+            <p><h4 id="result"></h4></p>
+          </div>              
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3">
+            <label for="exampleInputPassword1">Total List 2 Items</label>
+            <input type="text" class="form-control" id="list2Total" />          
+          </div>      
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-3">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="additionalLookupCost"> Lookup additional cost per match?
+              </label>
+            </div>    
+          </div>      
+        </div>      
+      </form>           
+    <p>
+      <button type="button" class="btn btn-primary" id="runScenario">Run Scenarios</button>
+    </p>
+  </div>  
+</div><!-- /.container -->
+
+<script src="additionalCosts.js"></script>
+<script src="list1.js"></script>
+<script src="list2.js"></script>
+<script src="levenstein.js"></script>
+
+<script type="text/javascript">
+"use strict";
+
+var list1Total = document.getElementById("list1Total"),
+  list2Total = document.getElementById("list2Total"),
+  additionalLookupCost = document.getElementById("additionalLookupCost"),
+  ajaxSpinner = document.getElementById("ajaxSpinner"),
+  result = document.getElementById("result");
+
+list1Total.value = list1.length;
+list2Total.value = list2.length;
+
+var runScenario = document.getElementById("runScenario");
+if(runScenario.addEventListener) {  
+  runScenario.addEventListener('click', function () {    
+
+    var startTime = moment();
+    result.innerHTML = "Started at " + startTime.format("MMMM Do YYYY, h:mm:ss a");
+
+    setTimeout(function () {
+      var levenshteinDistance = new LevenshteinDistance(list1, list1Total.value, list2, list2Total.value, additionalLookupCost.checked);
+      levenshteinDistance.compare(function (endTime) {
+        result.innerHTML += "<br />Finished at " + endTime.format("MMMM Do YYYY, h:mm:ss a");
+
+        var duration = moment.duration(endTime.diff(startTime)).asSeconds();
+        if(duration >= 61) {
+          duration = moment.duration(endTime.diff(startTime)).asMinutes() + " minute(s)";
+        } else {
+          duration += " second(s)";
+        }
+
+        result.innerHTML += "<br />Process took " + duration;
+      });
+    }, 150);      
+           
+  }, false);
+}
+    
+</script>
+</body>
+</html>
